@@ -1,0 +1,2846 @@
+<!DOCTYPE html>
+<!-- 
++-+-+-+-+-+ +-+-+-+-+-+-+-+
+  |U|l|t|i|m|a|t|e |S|e|c|u|r|i|t|y|
++-+-+-+-+-+ +-+-+-+-+-+-+-+
+  نویسنده: @Mani_coder
+  چنل نویسنده: @Source_donii
+نسخه: 4.0.0
+  آخرین بروزرسانی: 1404/4
+-->
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Security | ابزار امنیتی نهایی</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* فونت‌های سفارشی */
+        @font-face {
+            font-family: 'Vazir';
+            src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot');
+            src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot?#iefix') format('embedded-opentype'),
+                 url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff') format('woff'),
+                 url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* متغیرهای طراحی */
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --primary-dark: #5649c0;
+            --primary-darker: #3d36a0;
+            --secondary: #00cec9;
+            --secondary-dark: #00b5b2;
+            --danger: #ff7675;
+            --danger-dark: #e84393;
+            --warning: #fdcb6e;
+            --warning-dark: #ffeaa7;
+            --success: #55efc4;
+            --success-dark: #00b894;
+            --dark: #2d3436;
+            --dark-light: #636e72;
+            --light: #f5f6fa;
+            --light-dark: #dfe6e9;
+            --gray: #b2bec3;
+            --white: #ffffff;
+            --black: #000000;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+            --shadow-primary: 0 4px 20px rgba(108, 92, 231, 0.3);
+            --shadow-secondary: 0 4px 20px rgba(0, 206, 201, 0.3);
+            
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-fast: all 0.15s ease;
+            --border-radius: 16px;
+            --border-radius-sm: 10px;
+            --border-radius-lg: 24px;
+        }
+
+        /* ریست استایل‌ها */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            font-weight: 400;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* طرح‌بندی اصلی */
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.05) 0%, rgba(108, 92, 231, 0.05) 90%);
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* صفحه خوش‌آمدگویی پیشرفته */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 1s ease;
+            opacity: 1;
+            visibility: visible;
+            overflow: hidden;
+        }
+
+        .welcome-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 20%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        .welcome-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.3s;
+        }
+
+        .welcome-logo-icon {
+            width: 120px;
+            height: 120px;
+            background-color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                rgba(255,255,255,0.2)
+            );
+            transform: rotate(30deg);
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            background: linear-gradient(to right, #fff, #f5f6fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .welcome-description {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .enter-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 18px 40px;
+            border-radius: var(--border-radius-lg);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+            z-index: 2;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .enter-btn:hover::before {
+            opacity: 1;
+        }
+
+        .enter-btn i {
+            font-size: 1.4rem;
+            transition: var(--transition);
+        }
+
+        .enter-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* پنل تیم و شبکه‌های اجتماعی */
+        .team-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.4rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: var(--white);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+
+    /* تنظیمات خاص برای هر شبکه اجتماعی */
+    .social-link.github {
+        margin-top: 0;
+    }
+    
+    .social-link.youtube {
+        margin-top: 0;
+    }
+    
+    .social-link.instagram {
+        margin-top: -4px;  /* حرکت اینستاگرام کمی به بالا */
+    }
+
+        .social-link:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .social-link.github:hover {
+        background: #333;
+        color: white;
+    }
+
+    .social-link.youtube:hover {
+        background: #ff0000;
+        color: white;
+    }
+
+    .social-link.instagram:hover {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        color: white;
+    }
+
+        .social-tooltip {
+            position: absolute;
+            right: 60px;
+            background: var(--white);
+            padding: 8px 15px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-md);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .social-link:hover .social-tooltip {
+            opacity: 1;
+            visibility: visible;
+            right: 70px;
+        }
+        
+        @media (max-width: 768px) {
+        .team-panel {
+            bottom: 25px;
+            right: 15px;
+            gap: 6px;
+        }
+        
+        .social-link {
+            width: 42px;
+            height: 42px;
+            font-size: 1.1rem;
+        }
+
+        /* ربات تیم */
+        .team-bot {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1s;
+        }
+
+        .bot-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .bot-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bot-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .bot-link {
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .bot-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* هدر */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 15px 15px;
+            opacity: 0.3;
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
+        }
+
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            color: var(--white);
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 15px;
+            width: 0;
+            height: 2px;
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: calc(100% - 30px);
+        }
+
+        /* محتوای اصلی */
+        .main {
+            flex: 1;
+            padding: 40px 0 80px;
+            position: relative;
+        }
+
+        /* صفحه اصلی */
+        .home-section {
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 201, 0.05) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.05), rgba(0, 206, 201, 0.05));
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            margin-bottom: 60px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(135deg, rgba(108, 92, 231, 0.03) 0%, transparent 50%),
+                linear-gradient(-135deg, rgba(0, 206, 201, 0.03) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(108, 92, 231, 0.2);
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--dark-light);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-card:hover::before {
+            height: 8px;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            margin: 0 auto 25px;
+            box-shadow: var(--shadow-primary);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature-description {
+            color: var(--dark-light);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* ابزارها */
+        .tools-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .tools-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* کارت ابزار */
+        .tool-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            z-index: 1;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+
+        .tool-card:hover::before {
+            height: 8px;
+        }
+
+        .tool-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+            box-shadow: var(--shadow-primary);
+            margin-left: 20px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .tool-card:hover .tool-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .tool-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+
+        .tool-description {
+            color: var(--dark-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        /* فرم‌ها */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--light-dark);
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: rgba(245, 246, 250, 0.7);
+            font-family: inherit;
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--white);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: var(--gray);
+            opacity: 0.7;
+        }
+
+        /* دکمه‌ها */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            padding: 16px 28px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--shadow-primary);
+            width: 100%;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            box-shadow: var(--shadow-secondary);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(0, 206, 201, 0.4);
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+            box-shadow: 0 4px 15px rgba(255, 118, 117, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(255, 118, 117, 0.4);
+            background: linear-gradient(135deg, var(--danger-dark), var(--danger));
+        }
+
+        .btn-sm {
+            padding: 12px 18px;
+            font-size: 0.9rem;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            opacity: 0.7;
+        }
+
+        /* چک‌باکس‌های زیبا */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .checkbox-container:hover {
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--light-dark);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .custom-checkbox::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--white);
+            font-size: 12px;
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkbox-container input:checked + .custom-checkbox {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkbox-container input:checked + .custom-checkbox::after {
+            opacity: 1;
+        }
+
+        .checkbox-label {
+            font-size: 0.95rem;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        /* نتایج */
+        .result {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: var(--border-radius-sm);
+            display: none;
+            background-color: var(--white);
+            border: 1px solid var(--light-dark);
+            animation: fadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .result-title i {
+            font-size: 1.5rem;
+        }
+
+        /* قدرت پسورد */
+        .password-strength {
+            height: 10px;
+            background-color: var(--light-dark);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease, background-color 0.5s ease;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strength-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 30px 30px;
+            animation: animateStripes 1s linear infinite;
+        }
+
+        .password-feedback {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            padding: 14px 16px;
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--light-dark);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+            transition: var(--transition);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 30px 30px;
+            animation: animateStripes 1s linear infinite;
+        }
+
+        /* جزئیات پسورد */
+        .password-details {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-card {
+            background-color: var(--white);
+            padding: 18px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-dark);
+            transition: var(--transition);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        .detail-title {
+            color: var(--dark-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        /* پورت اسکنر */
+        .port-result {
+            margin-top: 25px;
+        }
+
+        .port-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--light-dark);
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .port-item:hover {
+            background-color: rgba(108, 92, 231, 0.03);
+            transform: translateX(5px);
+        }
+
+        .port-item:last-child {
+            border-bottom: none;
+        }
+
+        .port-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .port-number {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            background-color: rgba(108, 92, 231, 0.1);
+            padding: 4px 10px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .port-name {
+            font-size: 0.9rem;
+            color: var(--dark-light);
+            transition: var(--transition);
+        }
+
+        .port-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            bottom: -3px;
+            left: -3px;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .port-open .status-dot {
+            background-color: var(--success);
+        }
+
+        .port-open .status-dot::after {
+            background-color: var(--success);
+        }
+
+        .port-closed .status-dot {
+            background-color: var(--danger);
+        }
+
+        .port-closed .status-dot::after {
+            background-color: var(--danger);
+        }
+
+        .port-filtered .status-dot {
+            background-color: var(--warning);
+        }
+
+        .port-filtered .status-dot::after {
+            background-color: var(--warning);
+        }
+
+        .status-text {
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .port-open .status-text {
+            color: var(--success-dark);
+        }
+
+        .port-closed .status-text {
+            color: var(--danger-dark);
+        }
+
+        .port-filtered .status-text {
+            color: var(--warning-dark);
+        }
+
+        /* پورت‌های سفارشی */
+        .custom-ports {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .custom-ports.show {
+            display: block;
+        }
+
+        .custom-port-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .custom-port-input input {
+            flex: 1;
+        }
+
+        .custom-port-input button {
+            width: auto;
+            padding: 0 20px;
+        }
+
+        .port-list {
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--light-dark);
+            border-radius: var(--border-radius-sm);
+            padding: 10px;
+            display: none;
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+
+        .port-list.show {
+            display: block;
+        }
+
+        .port-tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(108, 92, 231, 0.1);
+            color: var(--primary-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(108, 92, 231, 0.2);
+        }
+
+        .port-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background-color: rgba(108, 92, 231, 0.2);
+        }
+
+        .port-tag button {
+            background: none;
+            border: none;
+            color: var(--danger);
+            padding: 0;
+            margin-right: 8px;
+            width: auto;
+            box-shadow: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .port-tag button:hover {
+            transform: scale(1.2);
+            background-color: rgba(255, 118, 117, 0.1);
+        }
+
+        /* اسکن خلاصه */
+        .scan-summary {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-dark);
+            transition: var(--transition);
+        }
+
+        .scan-summary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .summary-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 25px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-open .stat-icon {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success-dark);
+        }
+
+        .stat-closed .stat-icon {
+            background-color: rgba(232, 67, 147, 0.1);
+            color: var(--danger-dark);
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .stat-open .stat-value {
+            color: var(--success-dark);
+        }
+
+        .stat-closed .stat-value {
+            color: var(--danger-dark);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--dark-light);
+            transition: var(--transition);
+        }
+
+        /* راهنما */
+        .help-section {
+            margin-top: 40px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .help-section:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .help-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .help-title i {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .help-content {
+            line-height: 1.8;
+            color: var(--dark-light);
+            transition: var(--transition);
+        }
+
+        .help-item {
+            margin-bottom: 20px;
+        }
+
+        .help-item-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .help-item-title i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .help-item-content {
+            padding-right: 25px;
+        }
+
+        /* دکمه بازگشت به بالا */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow-primary);
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+
+        /* فوتتر */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+            transition: var(--transition);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .footer-link i {
+            font-size: 1.1rem;
+        }
+
+        .copyright {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        @keyframes pulseBackground {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes animateStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* اسکرول بار سفارشی */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* تم تاریک */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .welcome-screen {
+            background: linear-gradient(135deg, var(--primary-darker), var(--primary-dark));
+        }
+
+        body.dark-mode .welcome-screen::before {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0,0,0,0.2) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(0,0,0,0.2) 0%, transparent 20%);
+        }
+
+        body.dark-mode .welcome-title {
+            background: linear-gradient(to right, #e0e0e0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, var(--primary-darker), var(--primary-dark));
+        }
+
+        body.dark-mode .tool-card {
+            background-color: #1e1e1e;
+            border-color: #2a2a2a;
+        }
+
+        body.dark-mode .form-control {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        body.dark-mode .form-control:focus {
+            background-color: #333;
+        }
+
+        body.dark-mode .password-feedback,
+        body.dark-mode .result,
+        body.dark-mode .scan-summary,
+        body.dark-mode .help-section {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+
+        body.dark-mode .detail-card {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+
+        body.dark-mode .port-list {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+
+        body.dark-mode .port-tag {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        body.dark-mode .detail-title,
+        body.dark-mode .port-name,
+        body.dark-mode .tool-description,
+        body.dark-mode .hero-subtitle,
+        body.dark-mode .help-content,
+        body.dark-mode .stat-label {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .detail-value,
+        body.dark-mode .tool-title,
+        body.dark-mode .help-item-title,
+        body.dark-mode .summary-title,
+        body.dark-mode .help-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .checkbox-label {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .custom-checkbox {
+            border-color: #555;
+        }
+
+        body.dark-mode .checkbox-container:hover {
+            background-color: rgba(108, 92, 231, 0.1);
+        }
+
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+        }
+
+        body.dark-mode .password-strength,
+        body.dark-mode .progress-container {
+            background-color: #444;
+        }
+
+        body.dark-mode .feature-card {
+            background-color: #1e1e1e;
+            border-color: #2a2a2a;
+        }
+
+        body.dark-mode .feature-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .feature-description {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .home-section::before {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 201, 0.03) 0%, transparent 20%);
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .password-details {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .welcome-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .tools-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .help-title {
+                font-size: 1.6rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .tool-card {
+                padding: 25px;
+            }
+            
+            .tool-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .tool-title {
+                font-size: 1.4rem;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                left: 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .enter-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-bot {
+                left: 15px;
+                right: 15px;
+                bottom: 15px;
+                width: auto;
+            }
+            
+            .team-panel {
+                right: 15px;
+                bottom: 90px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .password-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .custom-port-input {
+                flex-direction: column;
+            }
+            
+            .custom-port-input button {
+                width: 100%;
+            }
+            
+            .help-section {
+                padding: 20px;
+            }
+            
+            .help-title {
+                font-size: 1.4rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+            
+            .welcome-logo-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .welcome-description {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- صفحه خوش‌آمدگویی پیشرفته -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-content">
+            <div class="welcome-logo">
+                <div class="welcome-logo-icon">SP</div>
+                <h1 class="welcome-title">Ultimate Security</h1>
+                <p class="welcome-subtitle">ابزارهای پیشرفته امنیتی برای حفاظت از سیستم‌های شما</p>
+            </div>
+            <p class="welcome-description">
+                به مجموعه ابزارهای امنیتی پیشرفته ما خوش آمدید. این پلتفرم به شما امکان می‌دهد تا امنیت سیستم‌های خود را به صورت حرفه‌ای بررسی و بهبود بخشید.
+                <br>
+                بدون نیاز به نصب - کاملاً رایگان - ۱۰۰% مبتنی بر مرورگر
+            </p>
+            <button class="enter-btn" id="enter-btn">
+                ورود به سیستم
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="app">
+        <!-- هدر -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <a href="#home" class="logo">
+                        <span class="logo-icon">SP</span>
+                        Ultimate Security
+                    </a>
+                    <nav class="nav">
+                        <a href="#home" class="nav-link"><i class="fas fa-home"></i> خانه</a>
+                        <a href="#password-checker" class="nav-link"><i class="fas fa-lock"></i> پسورد چکر</a>
+                        <a href="#port-scanner" class="nav-link"><i class="fas fa-network-wired"></i> پورت اسکنر</a>
+                        <a href="#help" class="nav-link"><i class="fas fa-question-circle"></i> راهنما</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوای اصلی -->
+        <main class="main">
+            <div class="container">
+                <!-- صفحه اصلی -->
+                <section id="home" class="home-section">
+                    <div class="hero">
+                        <h1 class="hero-title">ابزار امنیتی نهایی</h1>
+                        <p class="hero-subtitle">
+                            مجموعه ابزارهای پیشرفته برای بررسی و بهبود امنیت سیستم‌های شما
+                            <br>
+                            بدون نیاز به نصب و کاملاً رایگان - ۱۰۰% مبتنی بر مرورگر
+                        </p>
+                    </div>
+
+                    <div class="features">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                            <h3 class="feature-title">آنالیزور رمز عبور</h3>
+                            <p class="feature-description">قدرت رمزهای عبور خود را بررسی کنید و پیشنهادات امنیتی دریافت نمایید تا از امنیت حساب‌های کاربری خود مطمئن شوید.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-network-wired"></i></div>
+                            <h3 class="feature-title">اسکنر پورت‌ها</h3>
+                            <p class="feature-description">وضعیت پورت‌های سرور یا دستگاه مورد نظر را بررسی کنید تا از امنیت شبکه و سیستم‌های خود اطمینان حاصل کنید.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h3 class="feature-title">امنیت پیشرفته</h3>
+                            <p class="feature-description">ابزارهای امنیتی پیشرفته برای حفاظت از سیستم‌های شما در برابر تهدیدات امنیتی و نفوذگران.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ابزارها -->
+                <div class="tools-container">
+                    <!-- پسورد چکر پیشرفته -->
+                    <section id="password-checker" class="tool-card">
+                        <div class="tool-card-header">
+                            <div class="tool-icon"><i class="fas fa-lock"></i></div>
+                            <div>
+                                <h2 class="tool-title">آنالیزور حرفه‌ای رمز عبور</h2>
+                                <p class="tool-description">قدرت رمز عبور خود را بررسی کنید و پیشنهادات امنیتی دریافت نمایید</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">رمز عبور را وارد کنید:</label>
+                            <input type="password" id="password" class="form-control" placeholder="رمز عبور خود را اینجا بنویسید..." autocomplete="off">
+                            <div class="password-strength">
+                                <div class="strength-bar" id="strength-bar"></div>
+                            </div>
+                            <div class="password-feedback" id="password-feedback"></div>
+                        </div>
+                        
+                        <div class="progress-container" id="progress-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        
+                        <button id="check-password" class="btn">
+                            <span id="check-icon"><i class="fas fa-search"></i></span>
+                            تحلیل رمز عبور
+                        </button>
+                        
+                        <div class="result" id="password-result">
+                            <h3 class="result-title">
+                                <i class="fas fa-chart-bar"></i>
+                                نتایج تحلیل پیشرفته
+                            </h3>
+                            <div class="password-details">
+                                <div class="detail-card">
+                                    <h4 class="detail-title">امتیاز امنیتی</h4>
+                                    <p class="detail-value" id="password-score">0/10</p>
+                                </div>
+                                <div class="detail-card">
+                                    <h4 class="detail-title">زمان تخمینی کرک</h4>
+                                    <p class="detail-value" id="password-time">ناچیز</p>
+                                </div>
+                                <div class="detail-card">
+                                    <h4 class="detail-title">طول رمز</h4>
+                                    <p class="detail-value" id="password-length">0 کاراکتر</p>
+                                </div>
+                                <div class="detail-card">
+                                    <h4 class="detail-title">الگوهای یافت شده</h4>
+                                    <p class="detail-value" id="password-patterns">هیچ</p>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-card" style="margin-top: 15px;">
+                                <h4 class="detail-title">پیشنهادات امنیتی</h4>
+                                <p class="detail-value" id="password-suggestions">رمز عبور قوی باید ترکیبی از حروف بزرگ و کوچک، اعداد و کاراکترهای خاص باشد</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- پورت اسکنر پیشرفته -->
+                    <section id="port-scanner" class="tool-card">
+                        <div class="tool-card-header">
+                            <div class="tool-icon"><i class="fas fa-network-wired"></i></div>
+                            <div>
+                                <h2 class="tool-title">اسکنر پیشرفته پورت‌ها</h2>
+                                <p class="tool-description">وضعیت پورت‌های سرور یا دستگاه مورد نظر را بررسی کنید</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="host" class="form-label">آدرس هاست یا IP:</label>
+                            <input type="text" id="host" class="form-control" placeholder="مثال: example.com یا 192.168.1.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">نوع اسکن:</label>
+                            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                                <label class="checkbox-container">
+                                    <input type="radio" name="scan-type" value="common" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">پورت‌های رایج</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="radio" name="scan-type" value="custom">
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">پورت‌های سفارشی</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="common-ports">
+                            <label class="form-label">پورت‌های مورد بررسی:</label>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="21" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">FTP (21)</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="22" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">SSH (22)</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="80" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">HTTP (80)</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="443" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">HTTPS (443)</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="3306" checked>
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">MySQL (3306)</span>
+                                </label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="port-checkbox" value="3389">
+                                    <span class="custom-checkbox"></span>
+                                    <span class="checkbox-label">RDP (3389)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="custom-ports" id="custom-ports">
+                            <label class="form-label">افزودن پورت‌های سفارشی:</label>
+                            <div class="custom-port-input">
+                                <input type="number" id="new-port" class="form-control" placeholder="عدد پورت (1-65535)" min="1" max="65535">
+                                <button id="add-port" class="btn btn-secondary btn-sm"><i class="fas fa-plus"></i> افزودن</button>
+                            </div>
+                            <div class="port-list" id="port-list"></div>
+                        </div>
+                        
+                        <button id="scan-ports" class="btn">
+                            <span id="scan-icon"><i class="fas fa-search"></i></span>
+                            شروع اسکن پورت‌ها
+                        </button>
+                        
+                        <div class="result port-result" id="port-result">
+                            <h3 class="result-title">
+                                <i class="fas fa-clipboard-list"></i>
+                                نتایج اسکن پورت‌ها
+                            </h3>
+                            <div id="port-results-list"></div>
+                            
+                            <div class="scan-summary">
+                                <h4 class="summary-title">خلاصه نتایج</h4>
+                                <div class="summary-stats">
+                                    <div class="stat-item stat-open">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div>
+                                            <span class="stat-value" id="open-ports">0</span>
+                                            <span class="stat-label">پورت باز</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-item stat-closed">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                        <div>
+                                            <span class="stat-value" id="closed-ports">0</span>
+                                            <span class="stat-label">پورت بسته</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- بخش راهنما -->
+                <section id="help" class="help-section">
+                    <h2 class="help-title">
+                        <i class="fas fa-question-circle"></i>
+                        راهنمای استفاده از ابزار
+                    </h2>
+                    <div class="help-content">
+                        <div class="help-item">
+                            <h3 class="help-item-title">
+                                <i class="fas fa-lock"></i>
+                                آنالیزور رمز عبور
+                            </h3>
+                            <div class="help-item-content">
+                                <p>این ابزار به شما کمک می‌کند تا قدرت رمز عبور خود را ارزیابی کنید. کافیست رمز عبور خود را در فیلد مربوطه وارد کنید تا سیستم به صورت خودکار:</p>
+                                <ul style="padding-right: 20px; margin-top: 10px;">
+                                    <li>امتیاز امنیتی رمز عبور (از 0 تا 10) را محاسبه کند</li>
+                                    <li>زمان تخمینی برای کرک شدن رمز را نمایش دهد</li>
+                                    <li>الگوهای ضعیف و قابل حدس را شناسایی کند</li>
+                                    <li>پیشنهادات برای بهبود امنیت رمز عبور ارائه دهد</li>
+                                </ul>
+                                <p style="margin-top: 15px;">رمزهای عبور قوی معمولاً دارای حداقل ۱۲ کاراکتر، ترکیبی از حروف بزرگ و کوچک، اعداد و کاراکترهای خاص هستند.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="help-item">
+                            <h3 class="help-item-title">
+                                <i class="fas fa-network-wired"></i>
+                                اسکنر پورت‌ها
+                            </h3>
+                            <div class="help-item-content">
+                                <p>این ابزار به شما امکان می‌دهد وضعیت پورت‌های یک سرور یا دستگاه را بررسی کنید. برای استفاده:</p>
+                                <ul style="padding-right: 20px; margin-top: 10px;">
+                                    <li>آدرس IP یا دامنه مورد نظر را وارد کنید</li>
+                                    <li>پورت‌های مورد نظر را انتخاب کنید (می‌توانید از پورت‌های پیش‌فرض استفاده کنید یا پورت‌های سفارشی اضافه نمایید)</li>
+                                    <li>روی دکمه "شروع اسکن" کلیک کنید</li>
+                                </ul>
+                                <p style="margin-top: 15px;">نتایج اسکن به شما نشان می‌دهد که کدام پورت‌ها باز هستند (آماده دریافت اتصال) و کدام‌ها بسته هستند. پورت‌های باز ممکن است نشان‌دهنده سرویس‌های در حال اجرا روی دستگاه هدف باشند.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="help-item">
+                            <h3 class="help-item-title">
+                                <i class="fas fa-lightbulb"></i>
+                                نکات امنیتی
+                            </h3>
+                            <div class="help-item-content">
+                                <ul style="padding-right: 20px;">
+                                    <li>هرگز از رمزهای عبور ساده یا قابل حدس استفاده نکنید</li>
+                                    <li>برای هر حساب کاربری از رمز عبور منحصر به فرد استفاده کنید</li>
+                                    <li>پورت‌های غیرضروری را روی سرورهای خود ببندید</li>
+                                    <li>همیشه نرم‌افزارها و سیستم‌عامل خود را به‌روز نگه دارید</li>
+                                    <li>از احراز هویت دو مرحله‌ای استفاده کنید</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- پنل تیم و شبکه‌های اجتماعی -->
+        <div class="team-panel">
+    <a href="https://github.com/source-donii" class="social-link github" target="_blank" title="GitHub">
+        <i class="fab fa-github"></i>
+    </a>
+    <a href="https://youtube.com/source_donii" class="social-link youtube" target="_blank" title="YouTube">
+        <i class="fab fa-youtube"></i>
+    </a>
+    <a href="https://instagram.com/source_donii" class="social-link instagram" target="_blank" title="Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+</div>
+
+        <!-- ربات تیم -->
+        <div class="team-bot">
+            <div class="bot-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="bot-info">
+                <div class="bot-title">ربات تیم ما</div>
+                <a href="https://t.me/cucumbernumbot" class="bot-link" target="_blank">@cucumbernumbot</a>
+            </div>
+        </div>
+
+        <!-- دکمه بازگشت به بالا -->
+        <button class="back-to-top" id="back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <!-- فوتتر -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link"><i class="fas fa-file-alt"></i> قوانین</a>
+                        <a href="#" class="footer-link"><i class="fas fa-shield-alt"></i> حریم خصوصی</a>
+                        <a href="#" class="footer-link"><i class="fas fa-envelope"></i> تماس با ما</a>
+                        <a href="#" class="footer-link"><i class="fas fa-code"></i> توسعه دهندگان</a>
+                    </div>
+                    <p class="copyright">© 2025 Ultimate Security | تمام حقوق محفوظ است | نسخه 4.0.0</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // مدیریت صفحه خوش‌آمدگویی
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const enterBtn = document.getElementById('enter-btn');
+            
+            // اگر قبلاً وارد شده‌اید، صفحه خوش‌آمدگویی را نشان ندهید
+            if (sessionStorage.getItem('visited') === 'true') {
+                welcomeScreen.classList.add('hidden');
+            }
+            
+            enterBtn.addEventListener('click', function() {
+                welcomeScreen.classList.add('hidden');
+                sessionStorage.setItem('visited', 'true');
+                
+                // اسکرول به بخش اصلی
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 300);
+            });
+        });
+
+        // تغییر تم
+        const toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        };
+
+        // بررسی تم ذخیره شده
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // مدیریت تم
+        document.addEventListener('DOMContentLoaded', () => {
+            // اضافه کردن دکمه تغییر تم
+            const darkModeBtn = document.createElement('button');
+            darkModeBtn.className = 'btn btn-secondary';
+            darkModeBtn.style.position = 'fixed';
+            darkModeBtn.style.bottom = '104px';
+            darkModeBtn.style.left = '15px';
+            darkModeBtn.style.zIndex = '100';
+            darkModeBtn.style.width = 'auto';
+            darkModeBtn.style.padding = '12px 18px';
+            darkModeBtn.style.display = 'flex';
+            darkModeBtn.style.alignItems = 'center';
+            darkModeBtn.style.gap = '8px';
+            darkModeBtn.innerHTML = document.body.classList.contains('dark-mode') ? 
+                '<i class="fas fa-sun"></i> تم روشن' : 
+                '<i class="fas fa-moon"></i> تم تاریک';
+            darkModeBtn.addEventListener('click', () => {
+                toggleDarkMode();
+                darkModeBtn.innerHTML = document.body.classList.contains('dark-mode') ? 
+                    '<i class="fas fa-sun"></i> تم روشن' : 
+                    '<i class="fas fa-moon"></i> تم تاریک';
+            });
+            document.body.appendChild(darkModeBtn);
+        });
+
+        // مدیریت نوع اسکن پورت‌ها
+        const scanTypeRadios = document.querySelectorAll('input[name="scan-type"]');
+        const commonPortsDiv = document.getElementById('common-ports');
+        const customPortsDiv = document.getElementById('custom-ports');
+        const portListDiv = document.getElementById('port-list');
+        const customPorts = new Set();
+
+        scanTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'common') {
+                    commonPortsDiv.style.display = 'block';
+                    customPortsDiv.classList.remove('show');
+                } else {
+                    commonPortsDiv.style.display = 'none';
+                    customPortsDiv.classList.add('show');
+                    updatePortList();
+                }
+            });
+        });
+
+        // افزودن پورت سفارشی
+        document.getElementById('add-port').addEventListener('click', function() {
+            const portInput = document.getElementById('new-port');
+            const port = parseInt(portInput.value);
+
+            if (isNaN(port)) {
+                showAlert('لطفاً یک شماره پورت معتبر وارد کنید', 'error');
+                return;
+            }
+
+            if (port < 1 || port > 65535) {
+                showAlert('شماره پورت باید بین 1 تا 65535 باشد', 'error');
+                return;
+            }
+
+            if (customPorts.has(port)) {
+                showAlert('این پورت قبلاً اضافه شده است', 'warning');
+                return;
+            }
+
+            customPorts.add(port);
+            portInput.value = '';
+            updatePortList();
+            showAlert(`پورت ${port} با موفقیت اضافه شد`, 'success');
+        });
+
+        // نمایش اطلاعیه
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.position = 'fixed';
+            alert.style.bottom = '20px';
+            alert.style.right = '20px';
+            alert.style.padding = '15px 25px';
+            alert.style.borderRadius = 'var(--border-radius-sm)';
+            alert.style.backgroundColor = type === 'error' ? 'var(--danger)' : 
+                                         type === 'success' ? 'var(--success)' : 'var(--warning)';
+            alert.style.color = 'white';
+            alert.style.boxShadow = 'var(--shadow-md)';
+            alert.style.zIndex = '1000';
+            alert.style.transition = 'var(--transition)';
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateY(20px)';
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.opacity = '1';
+                alert.style.transform = 'translateY(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    alert.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // به‌روزرسانی لیست پورت‌های سفارشی
+        function updatePortList() {
+            portListDiv.innerHTML = '';
+            
+            if (customPorts.size === 0) {
+                portListDiv.style.display = 'none';
+                return;
+            }
+
+            portListDiv.style.display = 'block';
+            portListDiv.classList.add('show');
+
+            customPorts.forEach(port => {
+                const portTag = document.createElement('span');
+                portTag.className = 'port-tag';
+                portTag.innerHTML = `
+                    ${port}
+                    <button class="remove-port" data-port="${port}" title="حذف">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                portListDiv.appendChild(portTag);
+            });
+
+            // حذف پورت
+            document.querySelectorAll('.remove-port').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const port = parseInt(this.getAttribute('data-port'));
+                    customPorts.delete(port);
+                    updatePortList();
+                    showAlert(`پورت ${port} حذف شد`, 'warning');
+                });
+            });
+        }
+
+        // پسورد چکر پیشرفته
+        document.getElementById('check-password').addEventListener('click', checkPassword);
+        document.getElementById('password').addEventListener('input', updatePasswordStrength);
+
+        // تابع بررسی بلادرنگ قدرت پسورد
+        function updatePasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strength-bar');
+            const feedbackDiv = document.getElementById('password-feedback');
+
+            if (!password) {
+                strengthBar.style.width = '0%';
+                feedbackDiv.textContent = '';
+                document.getElementById('password-result').classList.remove('show');
+                return;
+            }
+
+            // محاسبه امتیاز (0-100)
+            const score = calculatePasswordScore(password);
+            const percent = score * 10;
+
+            // نمایش قدرت
+            strengthBar.style.width = `${percent}%`;
+            
+            // رنگ‌بندی و پیام
+            let strength, color;
+            if (percent < 30) {
+                strength = 'خیلی ضعیف';
+                color = 'var(--danger)';
+            } else if (percent < 50) {
+                strength = 'ضعیف';
+                color = 'var(--danger-dark)';
+            } else if (percent < 70) {
+                strength = 'متوسط';
+                color = 'var(--warning)';
+            } else if (percent < 90) {
+                strength = 'قوی';
+                color = 'var(--success)';
+            } else {
+                strength = 'خیلی قوی';
+                color = 'var(--success-dark)';
+            }
+
+            strengthBar.style.background = color;
+            feedbackDiv.innerHTML = `<strong>سطح امنیت:</strong> ${strength} (${Math.round(percent)}%)`;
+            feedbackDiv.style.color = color;
+            feedbackDiv.style.backgroundColor = `${color}15`;
+            feedbackDiv.style.borderLeft = `4px solid ${color}`;
+        }
+
+        // تابع محاسبه امتیاز پسورد (0-10)
+        function calculatePasswordScore(password) {
+            let score = 0;
+            
+            // طول پسورد
+            if (password.length >= 16) score += 3;
+            else if (password.length >= 12) score += 2;
+            else if (password.length >= 8) score += 1;
+            
+            // تنوع کاراکترها
+            const hasLower = /[a-z]/.test(password);
+            const hasUpper = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+            
+            if (hasLower && hasUpper) score += 1;
+            if (hasNumber) score += 1;
+            if (hasSpecial) score += 2;
+            
+            // الگوهای رایج
+            const commonPatterns = [
+                '123', 'abc', 'qwerty', 'password', 'admin', 'welcome',
+                'asdf', 'zxcv', '111', '000', '!@#', '1234', 'qwer',
+                'iloveyou', 'sunshine', 'monkey', 'letmein', 'welcome'
+            ];
+            
+            let patternFound = false;
+            commonPatterns.forEach(pattern => {
+                if (password.toLowerCase().includes(pattern)) {
+                    patternFound = true;
+                }
+            });
+            
+            if (!patternFound) score += 1;
+            
+            // تکرار کاراکترها
+            const uniqueChars = new Set(password.split(''));
+            if (uniqueChars.size >= password.length * 0.7) score += 1;
+            
+            // حداکثر امتیاز 10
+            return Math.min(score, 10);
+        }
+
+        // تابع کامل بررسی پسورد
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('password-result');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const checkIcon = document.getElementById('check-icon');
+            
+            if (!password) {
+                showAlert('لطفاً یک رمز عبور وارد کنید', 'error');
+                return;
+            }
+
+            // نمایش انیمیشن پردازش
+            resultDiv.classList.remove('show');
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            checkIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            document.getElementById('check-password').disabled = true;
+            
+            // شبیه‌سازی پردازش
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                progressBar.style.width = `${Math.min(progress, 100)}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    showPasswordResults(password);
+                    checkIcon.innerHTML = '<i class="fas fa-search"></i>';
+                    document.getElementById('check-password').disabled = false;
+                }
+            }, 100);
+        }
+
+        // نمایش نتایج پسورد
+        function showPasswordResults(password) {
+            const score = calculatePasswordScore(password);
+            const resultDiv = document.getElementById('password-result');
+            const progressContainer = document.getElementById('progress-container');
+            
+            // محاسبه زمان تخمینی کرک
+            let crackTime;
+            if (score <= 2) {
+                crackTime = 'کمتر از یک ثانیه';
+            } else if (score <= 4) {
+                crackTime = 'چند ثانیه تا چند دقیقه';
+            } else if (score <= 6) {
+                crackTime = 'چند ساعت تا چند روز';
+            } else if (score <= 8) {
+                crackTime = 'چند ماه تا چند سال';
+            } else {
+                crackTime = 'صدها سال یا بیشتر';
+            }
+            
+            // تشخیص الگوها
+            const patterns = [];
+            const commonPasswords = ['123456', 'password', 'qwerty', 'admin', 'welcome', '12345678', '111111', 'sunshine'];
+            const commonPatterns = ['123', 'abc', 'qwe', 'asd', 'admin', 'pass', '!@#'];
+            
+            commonPasswords.forEach(p => {
+                if (password.toLowerCase() === p) {
+                    patterns.push('رمز رایج');
+                }
+            });
+            
+            commonPatterns.forEach(p => {
+                if (password.toLowerCase().includes(p)) {
+                    patterns.push(`الگوی "${p}"`);
+                }
+            });
+            
+            // تشخیص کاراکترها
+            const hasLower = /[a-z]/.test(password);
+            const hasUpper = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+            
+            // پیشنهادات
+            const suggestions = [];
+            
+            if (password.length < 12) {
+                suggestions.push('طول رمز عبور حداقل ۱۲ کاراکتر باشد');
+            }
+            
+            if (!hasLower || !hasUpper) {
+                suggestions.push('از حروف بزرگ و کوچک استفاده کنید');
+            }
+            
+            if (!hasNumber) {
+                suggestions.push('از اعداد استفاده کنید');
+            }
+            
+            if (!hasSpecial) {
+                suggestions.push('از کاراکترهای خاص مانند !@#$% استفاده کنید');
+            }
+            
+            if (patterns.length > 0) {
+                suggestions.push('از الگوهای قابل حدس زدن اجتناب کنید');
+            }
+            
+            // نمایش نتایج
+            document.getElementById('password-score').textContent = `${score} از 10`;
+            document.getElementById('password-time').textContent = crackTime;
+            document.getElementById('password-length').textContent = `${password.length} کاراکتر`;
+            document.getElementById('password-patterns').textContent = patterns.length > 0 ? patterns.join('، ') : 'هیچ الگوی رایجی یافت نشد';
+            document.getElementById('password-suggestions').textContent = suggestions.length > 0 ? suggestions.join(' - ') : 'رمز عبور شما عالی است!';
+            
+            progressContainer.style.display = 'none';
+            resultDiv.classList.add('show');
+        }
+
+        // پورت اسکنر پیشرفته
+        document.getElementById('scan-ports').addEventListener('click', scanPorts);
+
+        // تابع اسکن پورت‌ها
+        function scanPorts() {
+            const host = document.getElementById('host').value;
+            const portResultDiv = document.getElementById('port-result');
+            const resultsList = document.getElementById('port-results-list');
+            const scanIcon = document.getElementById('scan-icon');
+            const scanType = document.querySelector('input[name="scan-type"]:checked').value;
+            
+            if (!host) {
+                showAlert('لطفاً آدرس هاست یا IP را وارد کنید', 'error');
+                return;
+            }
+            
+            // دریافت پورت‌های انتخاب شده
+            let ports = [];
+            
+            if (scanType === 'common') {
+                const checkboxes = document.querySelectorAll('.port-checkbox:checked');
+                ports = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            } else {
+                if (customPorts.size === 0) {
+                    showAlert('لطفاً حداقل یک پورت سفارشی اضافه کنید', 'error');
+                    return;
+                }
+                ports = Array.from(customPorts);
+            }
+            
+            if (ports.length === 0) {
+                showAlert('لطفاً حداقل یک پورت را انتخاب کنید', 'error');
+                return;
+            }
+            
+            // پاک کردن نتایج قبلی
+            resultsList.innerHTML = '';
+            portResultDiv.classList.add('show');
+            
+            // نمایش وضعیت اسکن
+            const scanningText = document.createElement('p');
+            scanningText.innerHTML = '<span class="loading"></span> در حال اسکن پورت‌ها... لطفاً صبر کنید';
+            resultsList.appendChild(scanningText);
+            
+            // غیرفعال کردن دکمه اسکن
+            document.getElementById('scan-ports').disabled = true;
+            scanIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            // شبیه‌سازی اسکن پورت‌ها
+            let openPorts = 0;
+            let closedPorts = 0;
+            
+            ports.forEach((port, index) => {
+                setTimeout(() => {
+                    // شبیه‌سازی زمان اسکن
+                    const scanTime = Math.random() * 1500 + 500;
+                    
+                    setTimeout(() => {
+                        // شبیه‌سازی نتیجه اسکن
+                        const isOpen = simulatePortCheck(port);
+                        
+                        if (isOpen) openPorts++;
+                        else closedPorts++;
+                        
+                        // نمایش نتیجه
+                        if (index === 0) {
+                            resultsList.innerHTML = '';
+                        }
+                        
+                        const portItem = document.createElement('div');
+                        portItem.className = `port-item ${isOpen ? 'port-open' : 'port-closed'}`;
+                        
+                        const portInfo = document.createElement('div');
+                        portInfo.className = 'port-info';
+                        
+                        const portNumber = document.createElement('span');
+                        portNumber.className = 'port-number';
+                        portNumber.textContent = port;
+                        
+                        const portName = document.createElement('span');
+                        portName.className = 'port-name';
+                        portName.textContent = getPortName(port);
+                        
+                        portInfo.appendChild(portNumber);
+                        portInfo.appendChild(portName);
+                        
+                        const status = document.createElement('div');
+                        status.className = 'port-status';
+                        
+                        const statusDot = document.createElement('span');
+                        statusDot.className = 'status-dot';
+                        
+                        const statusText = document.createElement('span');
+                        statusText.className = 'status-text';
+                        statusText.textContent = isOpen ? 'باز' : 'بسته';
+                        
+                        status.appendChild(statusDot);
+                        status.appendChild(statusText);
+                        
+                        portItem.appendChild(portInfo);
+                        portItem.appendChild(status);
+                        resultsList.appendChild(portItem);
+                        
+                        // به‌روزرسانی خلاصه نتایج
+                        document.getElementById('open-ports').textContent = openPorts;
+                        document.getElementById('closed-ports').textContent = closedPorts;
+                        
+                        // اگر آخرین پورت بود، فعال کردن دکمه اسکن
+                        if (index === ports.length - 1) {
+                            document.getElementById('scan-ports').disabled = false;
+                            scanIcon.innerHTML = '<i class="fas fa-search"></i>';
+                            showAlert('اسکن پورت‌ها با موفقیت انجام شد', 'success');
+                        }
+                    }, scanTime);
+                }, index * 300);
+            });
+        }
+
+        // شبیه‌سازی وضعیت پورت‌ها
+        function simulatePortCheck(port) {
+            // پورت‌هایی که معمولاً باز هستند
+            const commonlyOpenPorts = [80, 443, 22];
+            
+            // پورت‌هایی که معمولاً بسته هستند
+            const commonlyClosedPorts = [21, 25, 3306];
+            
+            if (commonlyOpenPorts.includes(port)) {
+                return Math.random() < 0.85; // 85% احتمال باز بودن
+            } else if (commonlyClosedPorts.includes(port)) {
+                return Math.random() < 0.15; // 15% احتمال باز بودن
+            }
+            
+            // برای سایر پورت‌ها 30% احتمال باز بودن
+            return Math.random() < 0.3;
+        }
+
+        // نام سرویس پورت‌ها
+        function getPortName(port) {
+            const portNames = {
+                21: 'FTP',
+                22: 'SSH',
+                25: 'SMTP',
+                53: 'DNS',
+                80: 'HTTP',
+                110: 'POP3',
+                143: 'IMAP',
+                443: 'HTTPS',
+                465: 'SMTPS',
+                587: 'SMTP',
+                993: 'IMAPS',
+                995: 'POP3S',
+                1433: 'MSSQL',
+                1521: 'Oracle',
+                2049: 'NFS',
+                3306: 'MySQL',
+                3389: 'RDP',
+                5432: 'PostgreSQL',
+                5900: 'VNC',
+                6379: 'Redis',
+                8080: 'HTTP Alt',
+                8443: 'HTTPS Alt',
+                27017: 'MongoDB'
+            };
+            
+            return portNames[port] || 'نامشخص';
+        }
+
+        // دکمه بازگشت به بالا
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // اسکرول نرم برای لینک‌ها
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+<!-- 
+  +-+-+-+-+-+-+-+-+-+
+  |P|o|w|e|r|e|d| |B|y|
+  +-+-+-+-+-+-+-+-+-+
+  نویسنده: @Mani_coder
+  چنل: @Source_donii
+  کپی رایت © 1404
+  تمامی حقوق محفوظ است
+-->
+</html>
